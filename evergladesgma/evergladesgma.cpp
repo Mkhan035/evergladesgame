@@ -89,4 +89,11 @@ int main()
         }
     } while (menu_option != 3);
 
-    }
+    return 0;
+}
+
+void showRules(){
+    cout << "Welcome player, here are the rules!" << endl << endl;
+    
+}
+
