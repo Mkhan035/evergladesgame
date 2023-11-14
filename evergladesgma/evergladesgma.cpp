@@ -64,7 +64,9 @@ int validMenuOption(int);
 int main()
 {
     const int ROWS = 5, COLS = 5;
-    int board[ROWS][COLS];
+    //for board setup
+    char list[2] = {'T', 'S'};
+    string board[5][5];
     bool playing = true;
     int menu_option;
 
@@ -79,6 +81,23 @@ int main()
             showRules();
             break;
         case 2:
+        //Set up board Method 1
+            random_device myEngine;
+            uniform_int_distribution<int>randomInt(0, 1);
+            for (int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 5; j++) {
+                        board[i][j] = list[randomInt(myEngine)];
+                    }
+             }
+        //if u wanna check the board's seeds
+        for (int k = 0; k < 5; k++) {
+            cout << endl;
+        for (int l = 0; l < 5; l++) {
+            cout << board[k][l] + " ";
+        }
+    }
+
+}
             break;
 
 
@@ -91,6 +110,7 @@ int main()
 
     }
 
+voi
 void showRules()
 {
     cout << "Please read the rules below." << endl << endl;
@@ -101,3 +121,5 @@ void showRules()
         << endl << "5. If Ranger fights and wins: Moves to desired cell, loses 2 gongs of time."
         << endl << "6. If Ranger fights and loses: Goes back to initial cell, loses 3 gongs of time." << endl << endl;
 }
+
+
