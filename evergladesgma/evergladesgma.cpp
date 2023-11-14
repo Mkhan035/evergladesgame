@@ -90,3 +90,14 @@ int main()
     } while (menu_option != 3);
 
     }
+
+void showRules()
+{
+    cout << "Please read the rules below." << endl << endl;
+    cout << "1. Player begins with 12 gongs of time; Game ends once gongs reaches 0."
+        << endl << "2. Ranger must move one cell at a time; Loses a gong per turn unless danger encountered." 
+        << endl << "3. If encountering danger, ranger must: Wait or Fight." 
+        << endl << "4. If Ranger waits: Moves to desired cell, loses 5 gongs of time, danger remains in cell."
+        << endl << "5. If Ranger fights and wins: Moves to desired cell, loses 2 gongs of time."
+        << endl << "6. If Ranger fights and loses: Goes back to initial cell, loses 3 gongs of time." << endl << endl;
+}
