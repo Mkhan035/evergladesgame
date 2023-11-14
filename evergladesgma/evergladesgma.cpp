@@ -57,9 +57,9 @@ using namespace std;
 
 //Function Prototypes
 
-void showBoard(int[][5]);
-void showRules();
-int validMenuOption(int);
+void showBoard(int[][5]); // Display the board
+void showRules(); // Display rules
+int validMenuOption(int); // The game itself
 
 int main()
 {
