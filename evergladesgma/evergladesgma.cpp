@@ -66,7 +66,7 @@ int main()
 {
    
     //for board setup
-    char list[2] = {'T', 'S'};
+    char list[2] = {'D', 'S'};
     string board[5][5];
     bool playing = true;
     int menu_option;
@@ -88,13 +88,16 @@ int main()
                         board[i][j] = list[randomNum(0,1)];
                     }
              }
+            board[0][0] = 'R';
+            board[4][4] = 'T';
+            
         //if u wanna check the board's seeds
-        for (int k = 0; k < 5; k++) {
+        /*for (int k = 0; k < 5; k++) {
             cout << endl;
             for (int l = 0; l < 5; l++) {
                 cout << board[k][l] + " ";
             }
-       }
+       }*/
             break;
         case 3:
             cout << "\nBye bye!";
