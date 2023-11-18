@@ -57,6 +57,7 @@ using namespace std;
 
 //Function Prototypes
 
+int randomNum(int, int);
 void showBoard(int[][5]);
 void showRules();
 int validMenuOption(int);
@@ -82,25 +83,19 @@ int main()
             break;
         case 2:
         //Set up board Method 1
-            random_device myEngine;
-            uniform_int_distribution<int>randomInt(0, 1);
             for (int i = 0; i < 5; i++) {
                     for (int j = 0; j < 5; j++) {
-                        board[i][j] = list[randomInt(myEngine)];
+                        board[i][j] = list[randomNum(0,1)];
                     }
              }
         //if u wanna check the board's seeds
         for (int k = 0; k < 5; k++) {
             cout << endl;
-        for (int l = 0; l < 5; l++) {
-            cout << board[k][l] + " ";
-        }
-    }
-
-}
+            for (int l = 0; l < 5; l++) {
+                cout << board[k][l] + " ";
+            }
+       }
             break;
-
-
         case 3:
             cout << "\nBye bye!";
             playing = false;
@@ -109,10 +104,10 @@ int main()
             cout << "Invalid menu option.";
         }
     } while (playing == true);
+    return 0;
+}
 
-    }
 
-voi
 void showRules()
 {
     cout << "Please read the rules below." << endl << endl;
@@ -123,5 +118,11 @@ void showRules()
         << endl << "5. If Ranger fights and wins: Moves to desired cell, loses 2 gongs of time."
         << endl << "6. If Ranger fights and loses: Goes back to initial cell, loses 3 gongs of time." << endl << endl;
 }
-
+int randomNum(int x, int y) {
+    int value;
+    random_device myEngine;
+    uniform_int_distribution<int>randomInt(x, y);
+    value = randomInt(myEngine);
+    return value;
+}
 
