@@ -82,12 +82,13 @@ int main()
             showRules();
             break;
         case 2:
-        //Set up board Method 1
+        //Set safe spots and dangers
             for (int i = 0; i < 5; i++) {
                     for (int j = 0; j < 5; j++) {
                         board[i][j] = list[randomNum(0,1)];
                     }
              }
+            //Set Ranger and Tourist positions
             board[0][0] = 'R';
             board[4][4] = 'T';
             
