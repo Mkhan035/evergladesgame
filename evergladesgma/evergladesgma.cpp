@@ -102,11 +102,13 @@ int main()
 
 
         case 3:
+            cout << "\nBye bye!";
+            playing = false;
             break;
         default:
             cout << "Invalid menu option.";
         }
-    } while (menu_option != 3);
+    } while (playing == true);
 
     }
 
