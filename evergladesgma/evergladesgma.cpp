@@ -64,7 +64,7 @@ int validMenuOption(int);
 
 int main()
 {
-    const int ROWS = 5, COLS = 5;
+   
     //for board setup
     char list[2] = {'T', 'S'};
     string board[5][5];
@@ -73,8 +73,8 @@ int main()
 
     do {
 
-        cout << "Lost in the Everglades ..." << endl << endl;
-        cout << "Let's play! Pick a menu option";
+        cout << "\nLost in the Everglades ..." << endl << endl;
+        cout << "\nLet's play! Pick a menu option: ";
         cin >> menu_option;
 
         switch (menu_option) {
