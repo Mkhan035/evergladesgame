@@ -61,12 +61,13 @@ int randomNum(int, int);
 void showBoard(int[][5]);
 void showRules();
 int validMenuOption(int);
-
+int dangerIdentified(string[][5], int&);
 int main()
 {
    
     //for board setup
-    char list[2] = {'D', 'S'};
+    int gongs = 12
+    int hMove, vMove;
     string board[5][5] = {
 		{"R", "D", "S", "S", "D"},
 		{"D","S", "S", "S", "D"},
@@ -97,6 +98,10 @@ int main()
                 cout << " ";
             }
        }*/
+	//hMove and vMove represent the player's position.
+	if (board[hMove][vMove] == "D") {
+		dangerIdentified(board);
+	}
             break;
         case 3:
             cout << "\nBye bye!";
@@ -127,4 +132,34 @@ int randomNum(int x, int y) {
     value = randomInt(myEngine);
     return value;
 }
+int dangerIdentified(string board[][5], int&gongs) {
+	string possibleDangers[4] = { "Famished Alligator", "Swarm of Mosquitos", "Venomous Spider", "Python" };
+	string symbolBoard[4] = { "A", "M", "S", "P" };
+	int rDanger, choice, winOrLose;
+	rDanger = randomNum(0, 3);
 
+	cout << "Uh oh, you've encountered a " << possibleDangers[rDanger] << "!";
+	cout << "\nChoose your next move: " << endl;
+	cout << "\t1. Wait until it leaves" << endl;
+	cout << "\t2. Fight it" << endl;
+	cout << "\nMove: ";
+	cin >> choice;
+
+	if (choice == 1) {
+		cout << "--->" << possibleDangers[rDanger] << " is gone! You advance!";
+		gongs -= 5;
+	}
+	if (choice == 2) {
+		winOrLose = randomNum(0, 1);
+		if (winOrLose == 0) {
+			cout << "\n--->You fight the " << possibleDangers[rDanger] << " and win! Go forth!";
+			gongs -= 2;
+		}
+		if (winOrLose == 1) {
+			cout << "\n--->Uh oh, you lost! Retreat!";
+			gongs -= 3;
+		}
+
+	}
+	return 0;
+}
