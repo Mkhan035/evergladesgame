@@ -50,7 +50,7 @@ Ranger moves first; Options after
 
 // random ints, iomanip, 3 function prototypes
 #include <iostream>
-#include <Random>
+#include <random>
 #include <iomanip>
 #include <string>
 using namespace std;
