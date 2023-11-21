@@ -71,7 +71,11 @@ int main()
     do {
 
         cout << "Lost in the Everglades ..." << endl << endl;
-        cout << "Let's play! Pick a menu option";
+        cout << "Let's play! Review the menu options below." << endl;
+        cout << "1. Game Rules" << endl
+            << "2. Play Game" << endl
+            << "3. Quit" << endl << endl;
+        cout << "Please select a menu option: ";
         cin >> menu_option;
 
         switch (menu_option) {
