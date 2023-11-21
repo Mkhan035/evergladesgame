@@ -67,7 +67,13 @@ int main()
    
     //for board setup
     char list[2] = {'D', 'S'};
-    string board[5][5];
+    string board[5][5] = {
+		{"R", "D", "S", "S", "D"},
+		{"D","S", "S", "S", "D"},
+		{"S", "D", "S", "S", "D"},
+		{"S","D", "S", "D", "R"},
+		{"S","D","S","D","T"}
+	};
     bool playing = true;
     int menu_option;
 
@@ -83,20 +89,12 @@ int main()
             break;
         case 2:
         //Set safe spots and dangers
-            for (int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 5; j++) {
-                        board[i][j] = list[randomNum(0,1)];
-                    }
-             }
-            //Set Ranger and Tourist positions
-            board[0][0] = 'R';
-            board[4][4] = 'T';
-            
         //if u wanna check the board's seeds
         /*for (int k = 0; k < 5; k++) {
             cout << endl;
             for (int l = 0; l < 5; l++) {
-                cout << board[k][l] + " ";
+                cout << board[k][l];
+                cout << " ";
             }
        }*/
             break;
