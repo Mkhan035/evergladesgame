@@ -61,7 +61,7 @@ int randomNum(int, int);
 void showBoard(int[][5]);
 void showRules();
 int validMenuOption(int);
-int dangerIdentified(string[][5], int&);
+string dangerIdentified(string[][5], int&, bool&);
 int main()
 {
    
@@ -99,8 +99,17 @@ int main()
             }
        }*/
 	//hMove and vMove represent the player's position.
-	if (board[hMove][vMove] == "D") {
-		dangerIdentified(board);
+		if (board[hMove][vMove] == "D") {
+		cout << "\nChecking for danger ...";
+		board[hMove][vMove] = dangerIdentified(board, gongs, advance);
+		if (advance == true) {
+			cout << "\nAdvance is true";
+			board[x_curr][y_curr] = "*";
+			board[hMove][vMove] = "R";
+		}
+		else {
+			board[x_curr][y_curr] = "R";
+		}
 	}
             break;
         case 3:
@@ -132,21 +141,28 @@ int randomNum(int x, int y) {
     value = randomInt(myEngine);
     return value;
 }
-int dangerIdentified(string board[][5], int&gongs) {
+string dangerIdentified(string board[][5], int& gongs, bool&advance) {
 	string possibleDangers[4] = { "Famished Alligator", "Swarm of Mosquitos", "Venomous Spider", "Python" };
 	string symbolBoard[4] = { "A", "M", "S", "P" };
+	string board_mark = "N";
 	int rDanger, choice, winOrLose;
 	rDanger = randomNum(0, 3);
-
-	cout << "Uh oh, you've encountered a " << possibleDangers[rDanger] << "!";
+	board_mark = symbolBoard[rDanger];
+	cout << "\nBegin danger execution";
+	cout << "\nUh oh, you've encountered a " << possibleDangers[rDanger] << "!";
 	cout << "\nChoose your next move: " << endl;
 	cout << "\t1. Wait until it leaves" << endl;
 	cout << "\t2. Fight it" << endl;
 	cout << "\nMove: ";
 	cin >> choice;
 
+	while (choice < 1 || choice >2) {
+		cout << "\nPick option 1 or two---there are no alternatives";
+		cout << "\nMove: ";
+		cin >> choice;
+	}
 	if (choice == 1) {
-		cout << "--->" << possibleDangers[rDanger] << " is gone! You advance!";
+		cout << "\n--->" << possibleDangers[rDanger] << " is gone! You advance!";
 		gongs -= 5;
 	}
 	if (choice == 2) {
@@ -154,12 +170,15 @@ int dangerIdentified(string board[][5], int&gongs) {
 		if (winOrLose == 0) {
 			cout << "\n--->You fight the " << possibleDangers[rDanger] << " and win! Go forth!";
 			gongs -= 2;
+			advance = true;
 		}
 		if (winOrLose == 1) {
 			cout << "\n--->Uh oh, you lost! Retreat!";
 			gongs -= 3;
+			advance = false;
 		}
 
 	}
-	return 0;
+	return board_mark;
 }
+
