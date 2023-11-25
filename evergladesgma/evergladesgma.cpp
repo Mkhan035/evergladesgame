@@ -66,7 +66,7 @@ int main()
 {
    
     //for board setup
-    int gongs = 12
+    int gongs = 12;
     int hMove, vMove;
     string board[5][5] = {
 		{"R", "D", "S", "S", "D"},
