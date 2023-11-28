@@ -73,9 +73,9 @@ int main()
     bool advance = true;
     int gongs = 12;
     int menu_option;
-    
-    
-    
+
+
+
     do {
 
         cout << "\nLost in the Everglades ..." << endl << endl;
@@ -84,7 +84,7 @@ int main()
 
         switch (menu_option) {
         case 1:
-           
+
             break;
         case 2:
             for (int i = 0; i < 5; ++i) {
@@ -105,16 +105,23 @@ int main()
                     cout << "Bad ... Try again" << endl;
                     cout << "enter next cell (row & col): ";
                     cin >> Rx >> Ry;
+
                 }
 
-             
+
+                while (Rx > initial_x + 1 || Ry > initial_y + 1 || Rx == initial_x || Ry == initial_y - 1)
+                {
+                    cout << "bad";
+                    cout << "STOP CHEATING!!! Re-enter next cell (row & col): ";
+                    cin >> Rx >> Ry;
+                }
 
                 if (board[Rx][Ry] == "D") {
                     cout << "\nChecking for danger ...";
                     displayBoard[Rx][Ry] = board[Rx][Ry] = dangerIdentified(board, gongs, advance);
                     if (advance == true) {
                         cout << "\nAdvance is true";
-                       
+
                         displayBoard[initial_x][initial_y] = " ";
                         board[initial_x][initial_y] = "O";
                         initial_x = Rx; initial_y = Ry;
@@ -144,7 +151,7 @@ int main()
     } while (playing == true);
     return 0;
 }
-    
+
 int randomNum(int x, int y) {
     int value;
     random_device myEngine;
