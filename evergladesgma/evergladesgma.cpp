@@ -101,7 +101,7 @@ int main()
                 cin >> Rx >> Ry;
                 cout << endl << endl;
 
-                while ((Rx < 0 || Rx > 4) || (Ry > 4 || Ry < 0)) {
+                while (Rx < 0 || Rx > 4 || Ry > 4 || Ry < 0) {
                     cout << "Bad ... Try again" << endl;
                     cout << "enter next cell (row & col): ";
                     cin >> Rx >> Ry;
