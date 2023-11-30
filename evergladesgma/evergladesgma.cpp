@@ -111,7 +111,7 @@ int main()
                 }
 
 
-                while (Rx > initial_x + 1 || Ry > initial_y + 1 || Rx == initial_x || Ry == initial_y - 1)
+                while (Rx > initial_x + 1 || Ry > initial_y + 1 || Rx == initial_x - 1 || Ry == initial_y - 1)
                 {
                     cout << "Bad ...";
                     cout << "STOP CHEATING!!! Re-enter next cell (row & col): ";
@@ -143,9 +143,9 @@ int main()
                 cout << "\nGongs left: " << gongs << endl;
 
                 if (gongs <= 0) {
-                    cout << "\n\nYou lose!!";
+                    cout << "\n\nYou lose!!\n";
                 } else if (board[Rx][Ry] == "T") {
-                    cout << "\n\nYou win!!";
+                    cout << "\n\nYou win!!\n";
                     gongs = 0;
                 }
             }
