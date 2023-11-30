@@ -113,7 +113,7 @@ int main()
 
                 while (Rx > initial_x + 1 || Ry > initial_y + 1 || Rx == initial_x || Ry == initial_y - 1)
                 {
-                    cout << "bad";
+                    cout << "Bad ...";
                     cout << "STOP CHEATING!!! Re-enter next cell (row & col): ";
                     cin >> Rx >> Ry;
                 }
@@ -141,6 +141,13 @@ int main()
                     gongs -= 1;
                 }
                 cout << "\nGongs left: " << gongs << endl;
+
+                if (gongs <= 0) {
+                    cout << "\n\nYou lose!!";
+                } else if (board[Rx][Ry] == "T") {
+                    cout << "\n\nYou win!!";
+                    gongs = 0;
+                }
             }
             break;
         case 3:
@@ -155,7 +162,7 @@ int main()
 }
 int menu() {
     int choice;
-    cout << "\n1)\tSee rules\n2)\tPlay game\n3)\tQuit\n";
+    cout << "\n\t1.See rules\n\t2.Play game\n\t3.Quit\n";
     cout << "\nChoice: ";
     cin >> choice;
     if (cin.fail()) {
