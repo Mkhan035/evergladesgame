@@ -3,12 +3,12 @@ Algorithm:
 Step 1: Show user menu options. (See rules, play game, quit)
 Step 2: User chooses 1 to show rules, 2 to play game, and 3 to quit game. If player selects 2, proceed to s3
 Step 3: Show board, gongs left, Cell movement options, remove asterisk from previous cell placement
-    a. Validate input; ensure it exists and was not already done before
+    a. Validate input; ensure it is within range of the ranger (adjacent to the player, but cannot go backwards in any way)
 Step 4: When player makes move, check to see if there's a Danger laced inside cell. if so, prompt them
-to fight or wait. Decrement gongs accordingly
-Step 5: Repeat steps 3-5 until gongs reach 0
+to fight or wait. Decrement gongs by 2 if they win the fight or by 3 if they lose. If Ranger retreats, decrement by 5.
+Step 5: Repeat steps 3-5 until gongs reach 0 or the player reaches the tourists
 Step 6: Tell user if they won or lost
-Step 7: Ask if player wants to play again. Restart/stop game accordingly
+Step 7: Re-loop menu until the player chooses 3 to quit
 
 */
 
@@ -50,90 +50,152 @@ Ranger moves first; Options after
 
 // random ints, iomanip, 3 function prototypes
 #include <iostream>
-#include <random>
-#include <iomanip>
 #include <string>
+#include <random>
 using namespace std;
-
-//Function Prototypes
-
+int menu();
+void rules();
 int randomNum(int, int);
-void showBoard(int[][5]);
-void showRules();
-int validMenuOption(int);
+void showBoard(string[][5]);
 string dangerIdentified(string[][5], int&, bool&);
 int main()
 {
-   
-    //for board setup
-    int gongs = 12;
-    int hMove, vMove;
+    string displayBoard[5][5];
+    const int rows = 5, cols = 5;
     string board[5][5] = {
-		{"R", "D", "S", "S", "D"},
-		{"D","S", "S", "S", "D"},
-		{"S", "D", "S", "S", "D"},
-		{"S","D", "S", "D", "S"},
-		{"S","D","S","D","T"}
-	};
+        {"R", "D", "S", "S", "D"},
+        {"D","S", "S", "S", "S"},
+        {"S", "D", "D", "S", "D"},
+        {"S","D", "S", "D", "S"},
+        {"S","D","S","D","T"}
+    };
+    cout << "\nLost in the Everglades ..." << endl << endl;
+    cout << "Welcome to our game! You will play as a Ranger in the Everglades trying to rescue a group\n" <<
+        "of tourists! Along the way, you will encounter Dangers that you must deal with to move forward. Good luck.";
     bool playing = true;
-    int menu_option;
-
     do {
+        
+        int Rx = 0, Ry = 0;
+        int initial_x = 0, initial_y = 0;
+        bool advance = true;
+        int gongs = 12;
+        int menu_option;
+        int win = 0;
+        
 
-        cout << "\nLost in the Everglades ..." << endl << endl;
-        cout << "\nLet's play! Pick a menu option: ";
-        cin >> menu_option;
+       
+        menu_option = menu();
+        
 
         switch (menu_option) {
         case 1:
-            showRules();
+            rules();
             break;
         case 2:
-        //Set safe spots and dangers
-        //if u wanna check the board's seeds
-        /*for (int k = 0; k < 5; k++) {
-            cout << endl;
-            for (int l = 0; l < 5; l++) {
-                cout << board[k][l];
-                cout << " ";
+            for (int i = 0; i < 5; ++i) {
+                for (int j = 0; j < 5; ++j) {
+                    displayBoard[i][j] = '*';
+                    displayBoard[Rx][Ry] = 'R';
+                    displayBoard[4][4] = 'T';
+
+                }
             }
-       }*/
-	//hMove and vMove represent the player's position.
-		if (board[hMove][vMove] == "D") {
-		cout << "\nChecking for danger ...";
-		board[hMove][vMove] = dangerIdentified(board, gongs, advance);
-		if (advance == true) {
-			cout << "\nAdvance is true";
-			board[x_curr][y_curr] = "*";
-			board[hMove][vMove] = "R";
-		}
-		else {
-			board[x_curr][y_curr] = "R";
-		}
-	}
+            while (gongs > 0 && win == false) 
+            {
+                showBoard(displayBoard);
+                cout << "Enter next cell (row & col): ";
+                cin >> Rx >> Ry;
+                cout << endl << endl;
+
+                while (Rx < 0 || Rx > 4 || Ry > 4 || Ry < 0) 
+                {
+                    cout << "Bad ... Try again" << endl;
+                    cout << "enter next cell (row & col): ";
+                    cin >> Rx >> Ry;
+
+                }
+
+
+                while (Rx > initial_x + 1 || Ry > initial_y + 1 || Rx < initial_x - 1 || Ry < initial_y - 1)
+                {
+                    cout << "bad";
+                    cout << "STOP CHEATING!!! Re-enter next cell (row & col): ";
+                    cin >> Rx >> Ry;
+                }
+
+                if (board[Rx][Ry] != "S" && board[Rx][Ry] != "T" && board[Rx][Ry] != "O") 
+                {
+                    cout << "\nChecking for danger ...";
+                    displayBoard[Rx][Ry] = board[Rx][Ry] = dangerIdentified(board, gongs, advance);
+                    if (advance == true) 
+                    {
+                        cout << "\nAdvance is true";
+
+                        displayBoard[initial_x][initial_y] = " ";
+                        board[initial_x][initial_y] = "O";
+                        initial_x = Rx; initial_y = Ry;
+                        displayBoard[Rx][Ry] = "R";
+                    }
+                    else 
+                    {
+                        displayBoard[initial_x][initial_y] = "R";
+                    }
+                }
+                else 
+                {
+                    displayBoard[initial_x][initial_y] = " ";
+                    board[initial_x][initial_y] = "O";
+                    initial_x = Rx; initial_y = Ry;
+                    displayBoard[Rx][Ry] = "R";
+                    gongs -= 1;
+                }
+
+                if (board[Rx][Ry] == "T")
+                    win++;
+                cout << "\nGongs left: " << gongs << endl;
+            }
+            
+            if (win == 1)
+                cout << "\nCongrats! You win, with " << gongs << " gongs left!";
+            else
+                cout << "\nYou ran out of gongs! Better luck next time!";
+           
+                
             break;
         case 3:
             cout << "\nBye bye!";
             playing = false;
             break;
         default:
-            cout << "Invalid menu option.";
+            cout << "\nInvalid menu option. Try again";
         }
     } while (playing == true);
     return 0;
 }
-
-
-void showRules()
-{
-    cout << "Please read the rules below." << endl << endl;
-    cout << "1. Player begins with 12 gongs of time; Game ends once gongs reaches 0."
-        << endl << "2. Ranger must move one cell at a time; Loses a gong per turn unless danger encountered." 
-        << endl << "3. If encountering danger, ranger must: Wait or Fight." 
-        << endl << "4. If Ranger waits: Moves to desired cell, loses 5 gongs of time, danger remains in cell."
-        << endl << "5. If Ranger fights and wins: Moves to desired cell, loses 2 gongs of time."
-        << endl << "6. If Ranger fights and loses: Goes back to initial cell, loses 3 gongs of time." << endl << endl;
+int menu() {
+    int choice;
+    cout << "\n1)\tSee rules\n2)\tPlay game\n3)\tQuit\n";
+    cout << "\nChoice: ";
+    cin >> choice;
+    if (cin.fail()) {
+        choice = 4;
+    }
+    return choice;
 }
+
+void rules() {
+    cout << "\nPlease read the rules below.\n\n";
+    cout << "1. Player begins with 12 gongs of time; Game ends once gongs reaches 0."
+        << "\n2. You may only move diagonally or to your right, downwards."
+        << "\n2. Ranger must move one cell at a time; Loses a gong per turn unless danger encountered."
+        << "\n3. If encountering danger, ranger must: Wait or Fight."
+        << "\n4. If Ranger waits : Moves to desired cell, loses 5 gongs of time, danger remains in cell."
+        << "\n5. If Ranger fights and wins: Moves to desired cell, loses 2 gongs of time."
+        << "\n6. If Ranger fights and loses: Goes back to initial cell, loses 3 gongs of time" 
+        << "\n7. If Ranger lost against the Danger, the cell will still have a Danger. You may encounter" 
+        << "\na different entity, however.\n\n";
+}
+
 int randomNum(int x, int y) {
     int value;
     random_device myEngine;
@@ -141,44 +203,60 @@ int randomNum(int x, int y) {
     value = randomInt(myEngine);
     return value;
 }
-string dangerIdentified(string board[][5], int& gongs, bool&advance) {
-	string possibleDangers[4] = { "Famished Alligator", "Swarm of Mosquitos", "Venomous Spider", "Python" };
-	string symbolBoard[4] = { "A", "M", "S", "P" };
-	string board_mark = "N";
-	int rDanger, choice, winOrLose;
-	rDanger = randomNum(0, 3);
-	board_mark = symbolBoard[rDanger];
-	cout << "\nBegin danger execution";
-	cout << "\nUh oh, you've encountered a " << possibleDangers[rDanger] << "!";
-	cout << "\nChoose your next move: " << endl;
-	cout << "\t1. Wait until it leaves" << endl;
-	cout << "\t2. Fight it" << endl;
-	cout << "\nMove: ";
-	cin >> choice;
+string dangerIdentified(string board[][5], int& gongs, bool& advance) {
+    string possibleDangers[4] = { "Famished Alligator", "Swarm of Mosquitos", "Venomous Spider", "Python" };
+    string symbolBoard[4] = { "A", "M", "V", "P" };
+    string board_mark = "N";
+    int rDanger, choice, winOrLose;
+    rDanger = randomNum(0, 3);
+    board_mark = symbolBoard[rDanger];
+    cout << "\nBegin danger execution";
+    cout << "\nUh oh, you've encountered a " << possibleDangers[rDanger] << "!";
+    cout << "\nChoose your next move: " << endl;
+    cout << "\t1. Wait until it leaves" << endl;
+    cout << "\t2. Fight it" << endl;
+    cout << "\nMove: ";
+    cin >> choice;
 
-	while (choice < 1 || choice >2) {
-		cout << "\nPick option 1 or two---there are no alternatives";
-		cout << "\nMove: ";
-		cin >> choice;
-	}
-	if (choice == 1) {
-		cout << "\n--->" << possibleDangers[rDanger] << " is gone! You advance!";
-		gongs -= 5;
-	}
-	if (choice == 2) {
-		winOrLose = randomNum(0, 1);
-		if (winOrLose == 0) {
-			cout << "\n--->You fight the " << possibleDangers[rDanger] << " and win! Go forth!";
-			gongs -= 2;
-			advance = true;
-		}
-		if (winOrLose == 1) {
-			cout << "\n--->Uh oh, you lost! Retreat!";
-			gongs -= 3;
-			advance = false;
-		}
+    while (choice < 1 || choice >2) {
+        cout << "\nPick option 1 or two---there are no alternatives";
+        cout << "\nMove: ";
+        cin >> choice;
+    }
+    if (choice == 1) {
+        cout << "\n--->" << possibleDangers[rDanger] << " is gone! You advance!";
+        gongs -= 5;
+        advance = true;
+    }
+    if (choice == 2) {
+        winOrLose = randomNum(0, 1);
+        if (winOrLose == 0) {
+            cout << "\n--->You fight the " << possibleDangers[rDanger] << " and win! Go forth!";
+            gongs -= 2;
+            advance = true;
+        }
+        if (winOrLose == 1) {
+            cout << "\n--->Uh oh, you lost! Retreat!";
+            gongs -= 3;
+            advance = false;
+        }
 
-	}
-	return board_mark;
+    }
+    return board_mark;
 }
-
+void showBoard(string displayBoard[5][5]) {
+    cout << "     0   1   2   3   4" << endl;
+    for (int i = 0; i < 5; i++) {
+        cout << i << " ";
+        if (i < 5) {
+            cout << " | ";
+        }
+        for (int j = 0; j < 5; j++) {
+            cout << displayBoard[i][j];
+            if (j < 5) {
+                cout << " | ";
+            }
+        }
+        cout << '\n';
+    }
+}
