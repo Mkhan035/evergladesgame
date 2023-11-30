@@ -61,20 +61,18 @@ string dangerIdentified(string[][5], int&, bool&);
 int main()
 {
     string displayBoard[5][5];
-    const int rows = 5, cols = 5;
-    string board[5][5] = {
+    cout << "\nLost in the Everglades ..." << endl << endl;
+    cout << "Welcome to our game! You will play as a Ranger in the Everglades trying to rescue a group\n" <<
+        "of tourists! Along the way, you will encounter Dangers that you must deal with to move forward. Good luck.";
+    bool playing = true;
+    do {
+        string board[5][5] = {
         {"R", "D", "S", "S", "D"},
         {"D","S", "S", "S", "S"},
         {"S", "D", "D", "S", "D"},
         {"S","D", "S", "D", "S"},
         {"S","D","S","D","T"}
     };
-    cout << "\nLost in the Everglades ..." << endl << endl;
-    cout << "Welcome to our game! You will play as a Ranger in the Everglades trying to rescue a group\n" <<
-        "of tourists! Along the way, you will encounter Dangers that you must deal with to move forward. Good luck.";
-    bool playing = true;
-    do {
-        
         int Rx = 0, Ry = 0;
         int initial_x = 0, initial_y = 0;
         bool advance = true;
