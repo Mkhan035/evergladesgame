@@ -55,6 +55,8 @@ Ranger moves first; Options after
 using namespace std;
 int randomNum(int, int);
 void showBoard(string[][5]);
+void rules();
+int menu();
 string dangerIdentified(string[][5], int&, bool&);
 int main()
 {
@@ -79,12 +81,12 @@ int main()
     do {
 
         cout << "\nLost in the Everglades ..." << endl << endl;
-        cout << "\nLet's play! Pick a menu option: ";
-        cin >> menu_option;
+        cout << "\nLet's play!\n";
+        menu_option = menu();
 
         switch (menu_option) {
         case 1:
-
+            rules();
             break;
         case 2:
             for (int i = 0; i < 5; ++i) {
@@ -150,6 +152,25 @@ int main()
         }
     } while (playing == true);
     return 0;
+}
+int menu() {
+    int choice;
+    cout << "\n1)\tSee rules\n2)\tPlay game\n3)\tQuit\n";
+    cout << "\nChoice: ";
+    cin >> choice;
+    if (cin.fail()) {
+        choice = 4;
+    }
+    return choice;
+}
+void rules() {
+    cout << "\nPlease read the rules below.\n\n";
+    cout << "1. Player begins with 12 gongs of time; Game ends once gongs reaches 0."
+        << "\n2. Ranger must move one cell at a time; Loses a gong per turn unless danger encountered."
+        << "\n3. If encountering danger, ranger must: Wait or Fight."
+        << "\n4. If Ranger waits : Moves to desired cell, loses 5 gongs of time, danger remains in cell."
+        << "\n5. If Ranger fights and wins: Moves to desired cell, loses 2 gongs of time."
+        << "\n6. If Ranger fights and loses: Goes back to initial cell, loses 3 gongs of time.\n\n";
 }
 
 int randomNum(int x, int y) {
