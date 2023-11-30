@@ -116,8 +116,8 @@ int main()
 
                 while (Rx > initial_x + 1 || Ry > initial_y + 1 || Rx < initial_x - 1 || Ry < initial_y - 1)
                 {
-                    cout << "bad";
-                    cout << "STOP CHEATING!!! Re-enter next cell (row & col): ";
+                    cout << "\nNo jumping! You may only move to the squares adjacent to the Ranger.";
+                    cout << "\nRe-enter next cell (row & col): ";
                     cin >> Rx >> Ry;
                 }
 
