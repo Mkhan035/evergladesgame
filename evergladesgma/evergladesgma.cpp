@@ -98,7 +98,8 @@ int main()
 
                 }
             }
-            while (gongs > 0 && win == false) 
+            cout << "\nLet's begin! Remember, you can only move to cells adjacent to the Ranger.\n";
+            while (gongs > 0 && win == 0) 
             {
                 showBoard(displayBoard);
                 cout << "Enter next cell (row & col): ";
@@ -121,16 +122,14 @@ int main()
                     cin >> Rx >> Ry;
                 }
 
-                if (board[Rx][Ry] != "S" && board[Rx][Ry] != "T" && board[Rx][Ry] != "O") 
+                if (board[Rx][Ry] != "S" && board[Rx][Ry] != "T") 
                 {
-                    cout << "\nChecking for danger ...";
+                    
                     displayBoard[Rx][Ry] = board[Rx][Ry] = dangerIdentified(board, gongs, advance);
                     if (advance == true) 
                     {
-                        cout << "\nAdvance is true";
-
                         displayBoard[initial_x][initial_y] = " ";
-                        board[initial_x][initial_y] = "O";
+                        board[initial_x][initial_y] = "S";
                         initial_x = Rx; initial_y = Ry;
                         displayBoard[Rx][Ry] = "R";
                     }
@@ -142,7 +141,7 @@ int main()
                 else 
                 {
                     displayBoard[initial_x][initial_y] = " ";
-                    board[initial_x][initial_y] = "O";
+                    board[initial_x][initial_y] = "S";
                     initial_x = Rx; initial_y = Ry;
                     displayBoard[Rx][Ry] = "R";
                     gongs -= 1;
@@ -183,17 +182,19 @@ int menu() {
 
 void rules() {
     cout << "\nPlease read the rules below.\n\n";
-    cout << "1. Player begins with 12 gongs of time; Game ends once gongs reaches 0."
-        << "\n2. You may only move diagonally or to your right, downwards."
-        << "\n2. Ranger must move one cell at a time; Loses a gong per turn unless danger encountered."
-        << "\n3. If encountering danger, ranger must: Wait or Fight."
-        << "\n4. If Ranger waits : Moves to desired cell, loses 5 gongs of time, danger remains in cell."
-        << "\n5. If Ranger fights and wins: Moves to desired cell, loses 2 gongs of time."
-        << "\n6. If Ranger fights and loses: Goes back to initial cell, loses 3 gongs of time" 
-        << "\n7. If Ranger lost against the Danger, the cell will still have a Danger. You may encounter" 
-        << "\na different entity, however.\n\n";
+    cout << "1. You begin with 12 gongs of time; the game ends once you run out of gongs."
+        << "\n2. You may only move to squares adjacent to the Ranger, and only one cell at a time."
+        << "\nYou may even go backwards, though we do not recommend it. You will lose only"
+        << "\none gong per turn unless the Ranger encounters a Danger."
+        << "\n3. If the Ranger finds a Danger, you will have two options: Wait or Fight."
+        << "\n\t4. If you WAIT, you will lose 5 gongs of time and advance forward. The cell will" 
+        << "\n\tstill harbor a Danger, but it may be a different entity."
+        << "\n\t5. If you FIGHT and WIN, you will advance forth and lose only 2 gongs of time."
+        << "\n6. If you FIGHT and LOSE, you will have to retreat and lose 3 gongs of time." 
+        << "\nKeep in mind that the cell will still have a Danger, so if you go back to the cell," 
+        << "\you will encounter a Danger, though it may be different entity.\n\n";
 }
-
+//Random number generator
 int randomNum(int x, int y) {
     int value;
     random_device myEngine;
@@ -201,14 +202,38 @@ int randomNum(int x, int y) {
     value = randomInt(myEngine);
     return value;
 }
+/*
+Mehreen's Algorithm: Handling Dangers
+Condition: Check if the player's next move has a Danger; if so, the following function will
+be called.
+1. Randomly select what danger will be encountered using a number generator (range: 0-3) and using
+it as a subscript in the possibleDangers array
+2. Store the mark corresponding to the Danger inside a string var "board_mark"
+3. Tell the player what Danger is present, followed by their two options (Wait or FIght)
+    3a. Validate input, making sure they typed either 1 or 2
+4. If they input 1, decrement ref var gongs by 5 and allow the player to advance (advance = true)
+5. If they input 2, generate a random number (range: 0-1) to determine if they win or lose
+    5a. If it's 1, the player won---decrement gongs by 2 and set advance to true
+    5b. If it's 0, the player lost---decrement gongs by 3 and set advance to false
+6. Return the board mark in case the player waited or lost so the board will reflect that
+*/
 string dangerIdentified(string board[][5], int& gongs, bool& advance) {
+    //Declare dangers and their parallel marks
     string possibleDangers[4] = { "Famished Alligator", "Swarm of Mosquitos", "Venomous Spider", "Python" };
     string symbolBoard[4] = { "A", "M", "V", "P" };
-    string board_mark = "N";
-    int rDanger, choice, winOrLose;
+
+    //Variable to be returned: the board symbol
+    string board_mark;
+    float choice;
+    int rDanger, winOrLose;
+
+    //Determine danger randomly
     rDanger = randomNum(0, 3);
+
+    //Update board mark
     board_mark = symbolBoard[rDanger];
-    cout << "\nBegin danger execution";
+
+    //Tell player they've encountered a Danger and give them their options
     cout << "\nUh oh, you've encountered a " << possibleDangers[rDanger] << "!";
     cout << "\nChoose your next move: " << endl;
     cout << "\t1. Wait until it leaves" << endl;
@@ -216,24 +241,30 @@ string dangerIdentified(string board[][5], int& gongs, bool& advance) {
     cout << "\nMove: ";
     cin >> choice;
 
-    while (choice < 1 || choice >2) {
-        cout << "\nPick option 1 or two---there are no alternatives";
+    //Ensure input is 1 or 2
+    while (choice != 1 && choice != 2) {
+        cout << "\nPick option 1 or 2---there are no alternatives";
         cout << "\nMove: ";
         cin >> choice;
     }
+    //If the player chooses 1 and waits, decrement gongs by 5 and set advance to true
     if (choice == 1) {
         cout << "\n--->" << possibleDangers[rDanger] << " is gone! You advance!";
         gongs -= 5;
         advance = true;
     }
+    //If the player chooses 2 and fights, we will see if they win or lose
     if (choice == 2) {
+        //1 = win, 0 = lose
         winOrLose = randomNum(0, 1);
-        if (winOrLose == 0) {
+        //If they win, decrement gongs by 2 and set advance to true
+        if (winOrLose == 1) {
             cout << "\n--->You fight the " << possibleDangers[rDanger] << " and win! Go forth!";
             gongs -= 2;
             advance = true;
         }
-        if (winOrLose == 1) {
+        //If they lose, decrement gongs by 3 and set advance to false
+        if (winOrLose == 0) {
             cout << "\n--->Uh oh, you lost! Retreat!";
             gongs -= 3;
             advance = false;
