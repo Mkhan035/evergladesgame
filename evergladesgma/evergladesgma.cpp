@@ -123,6 +123,7 @@ int main()
                     {
                         displayBoard[initial_x][initial_y] = " ";
                         board[initial_x][initial_y] = "S";
+                        board[Rx][Ry] = "S";
                         initial_x = Rx; initial_y = Ry;
                         displayBoard[Rx][Ry] = "R";
                     }
@@ -134,8 +135,8 @@ int main()
 
                 else
                 {
+                    cout << "\nCell (" << Rx << "," << Ry << ") is free... You advance!";
                     displayBoard[initial_x][initial_y] = " ";
-                    board[initial_x][initial_y] = "S";
                     initial_x = Rx; initial_y = Ry;
                     displayBoard[Rx][Ry] = "R";
                     gongs -= 1;
@@ -147,7 +148,7 @@ int main()
             }
 
             if (win == 1)
-                cout << "\nCongrats! You win, with " << gongs << " gongs remaining!";
+                cout << "\nCongrats! You win, with " << gongs << " gongs remaining!" << endl;
             else
                 cout << "\nYou ran out of gongs! Better luck next time!" << endl;
             break;
