@@ -1,5 +1,5 @@
 /*
-Algorithm:
+General Algorithm:
 Step 1: Show user menu options. (See rules, play game, quit)
 Step 2: User chooses 1 to show rules, 2 to play game, and 3 to quit game. If player selects 2, proceed to s3
 Step 3: Show board and gongs left, then prompt for move.
@@ -55,7 +55,7 @@ int main()
         //Position player wants to move to
         int Rx = 0, Ry = 0;
 
-        //Position player is currently at
+        //Position player is currently at; used for making retreats possible
         int initial_x = 0, initial_y = 0;
 
         bool advance = true;
@@ -119,6 +119,7 @@ int main()
                         cin >> Rx >> Ry;
                     }
                 } while (notValid == true);
+                
                 /* Algorithm: Updating the board
                 1. Check if player is moving to danger space; if so, call danger function
                 and update the board with its mark. It'll go away if advance is true
@@ -140,9 +141,13 @@ int main()
                 if (board[Rx][Ry] != "S" && board[Rx][Ry] != "T")
                 {
                     displayBoard[Rx][Ry] = board[Rx][Ry] = dangerIdentified(board, gongs, advance);
-
+                    //Advance is only true if player waited/fought+won
                     if (advance == true)
                     {
+                        //Update display board's "R" to player's current position
+                        //Mark previous space with " " for user's eyes
+                        //Turn danger space into safe space on hidden board
+                        //Update initial position to current position
                         displayBoard[initial_x][initial_y] = " ";
                         board[initial_x][initial_y] = "S";
                         board[Rx][Ry] = "S";
@@ -151,19 +156,24 @@ int main()
                     }
                     else
                     {
+                        //keep display board's "R" placement
                         displayBoard[initial_x][initial_y] = "R";
                     }
                 }
-
+                //This else is for if there is no danger (no "D") on the hidden board
                 else
                 {
+                    //Tell player cell is free
+                    //Update player's previous position on display to " " and current to "R"
+                    //Update initial position to current position
+                    //Decrement gongs by 1
                     cout << "\nCell (" << Rx << "," << Ry << ") is free... You advance!";
                     displayBoard[initial_x][initial_y] = " ";
                     initial_x = Rx; initial_y = Ry;
                     displayBoard[Rx][Ry] = "R";
                     gongs -= 1;
                 }
-
+                //Condition for win
                 //We'll lazily get around scope and update win's memory location instead
                 //0 = false, 1 = true
                 if (board[Rx][Ry] == "T")
@@ -316,5 +326,7 @@ string dangerIdentified(string board[][5], int& gongs, bool& advance) {
         }
 
     }
+
+    //For the display board; will be shown if the player lost the fight
     return board_mark;
 }
